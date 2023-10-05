@@ -1,20 +1,19 @@
 import { getCoreTools } from "./coreTools";
 
-if (typeof window !== undefined) {
-  
-}
-
 const coreTools = getCoreTools();
 
 const APIAuthBase = coreTools.getAxiosInstance();
-const saveAccessToken = coreTools.saveAccessToken;
-const getAccessToken = coreTools.getAccessToken;
-const setOnUpdateAccessToken = coreTools.setOnUpdateAccessToken;
+const saveAccessToken = (accessToken: string) =>
+  coreTools.saveAccessToken(accessToken);
+const getAccessToken = () => coreTools.getAccessToken();
+const setOnUpdateAccessToken = (
+  callback: (deauthenticated?: boolean) => void
+) => coreTools.setOnUpdateAccessToken(callback);
 
 export const authorization = {
   saveAccessToken,
   getAccessToken,
-  setOnUpdateAccessToken
-}
+  setOnUpdateAccessToken,
+};
 
 export const api = APIAuthBase;

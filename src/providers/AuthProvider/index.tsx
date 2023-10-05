@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
 import { authorization } from "@/core";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect } from "react";
 
 interface AuthProviderProps {
   children: React.ReactNode | React.ReactNode[];
@@ -11,19 +11,19 @@ interface AuthProviderProps {
 const AuthProvider = ({ children, onDeauthRoute }: AuthProviderProps) => {
   const router = useRouter();
 
-  useMemo(() => {
+  useEffect(() => {
     authorization.setOnUpdateAccessToken((deauthenticated) => {
-      if (authorization.getAccessToken() === '') {
+      if (authorization.getAccessToken() === null) {
         router.push(onDeauthRoute);
 
         if (deauthenticated) {
-          alert('desautenticado');
+          alert("desautenticado");
         }
       }
     });
   }, [onDeauthRoute, router]);
-  
+
   return children;
-}
+};
 
 export default AuthProvider;

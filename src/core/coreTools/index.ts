@@ -2,12 +2,12 @@ import axios, { AxiosInstance } from "axios";
 
 class CoreTools {
   private axiosInstance: AxiosInstance;
-  private loadedAccessToken: string;
+  private loadedAccessToken: string | null;
   private onUpdateAccessToken: null | ((deauthenticated?: boolean) => void);
 
   constructor() {
     this.axiosInstance = axios.create();
-    this.loadedAccessToken = '';
+    this.loadedAccessToken = null;
     this.onUpdateAccessToken = null;
 
     this.updateAccessToken();
@@ -29,7 +29,10 @@ class CoreTools {
   }
 
   public saveAccessToken(accessToken: string) {
-    localStorage.setItem('accessToken', accessToken);
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem("accessToken", accessToken);
+    }
+
     this.updateAccessToken();
     this.updateAxiosHeaders();
 
@@ -39,10 +42,14 @@ class CoreTools {
   }
 
   private updateAccessToken() {
-    const accessToken = localStorage.getItem('accessToken');
+    let accessToken = null;
+
+    if (typeof localStorage !== "undefined") {
+      accessToken = localStorage.getItem("accessToken");
+    }
 
     if (!accessToken) {
-      this.loadedAccessToken = '';
+      this.loadedAccessToken = null;
     } else {
       this.loadedAccessToken = accessToken;
     }
@@ -51,27 +58,28 @@ class CoreTools {
   private updateAxiosHeaders() {
     this.axiosInstance.interceptors.request.clear();
 
-    if (this.loadedAccessToken !== '') {
-      this.axiosInstance.interceptors.request.use((config) => {
+    this.axiosInstance.interceptors.request.use((config) => {
+      if (this.loadedAccessToken !== null) {
         config.headers.Authorization = `Bearer ${this.loadedAccessToken}`;
-        
-        return config;
-      });
-    }
+      }
+
+      config.baseURL = process.env.ENDPOINT_URL || "http://localhost:4000/";
+
+      return config;
+    });
 
     this.axiosInstance.interceptors.response.use((config) => {
       if (config.status === 401) {
-        this.loadedAccessToken = '';
+        this.loadedAccessToken = null;
 
         if (this.onUpdateAccessToken) {
           this.onUpdateAccessToken(true);
         }
       }
-      
+
       return config;
     });
   }
-
 }
 
 let coreTools: CoreTools | null = null;
@@ -81,4 +89,4 @@ export const getCoreTools = () => {
   }
 
   return coreTools;
-}
+};
