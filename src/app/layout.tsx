@@ -1,7 +1,13 @@
-import './globals.css'
+import { Roboto } from "next/font/google";
+import "./globals.css"
 
-export default function RootLayout({
-  children,
+const roboto = Roboto({
+  weight: "400",
+  subsets: ["latin"]
+});
+
+export default function RootLayout ({
+  children
 }: {
   children: React.ReactNode
 }) {
@@ -11,7 +17,7 @@ export default function RootLayout({
         <meta charSet='UTF-8' />
         <title>Front-end loja</title>
       </head>
-      <body>{children}</body>
+      <body className={roboto.className}>{children}</body>
     </html>
   )
 }
