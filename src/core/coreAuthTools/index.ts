@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-class CoreTools {
+class CoreAuthTools {
   private axiosInstance: AxiosInstance;
   private loadedAccessToken: string | null;
   private onUpdateAccessToken: null | ((deauthenticated?: boolean) => void);
@@ -82,10 +82,10 @@ class CoreTools {
   }
 }
 
-let coreTools: CoreTools | null = null;
-export const getCoreTools = () => {
+let coreTools: CoreAuthTools | null = null;
+export const getCoreAuthTools = () => {
   if (coreTools == null) {
-    coreTools = new CoreTools();
+    coreTools = new CoreAuthTools();
   }
 
   return coreTools;

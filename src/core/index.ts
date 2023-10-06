@@ -1,14 +1,14 @@
-import { getCoreTools } from "./coreTools";
+import { getCoreAuthTools } from "./coreAuthTools";
 
-const coreTools = getCoreTools();
+const coreAuthTools = getCoreAuthTools();
 
-const APIAuthBase = coreTools.getAxiosInstance();
+const APIAuthBase = coreAuthTools.getAxiosInstance();
 const saveAccessToken = (accessToken: string) =>
-  coreTools.saveAccessToken(accessToken);
-const getAccessToken = () => coreTools.getAccessToken();
+  coreAuthTools.saveAccessToken(accessToken);
+const getAccessToken = () => coreAuthTools.getAccessToken();
 const setOnUpdateAccessToken = (
   callback: (deauthenticated?: boolean) => void
-) => coreTools.setOnUpdateAccessToken(callback);
+) => coreAuthTools.setOnUpdateAccessToken(callback);
 
 export const authorization = {
   saveAccessToken,
