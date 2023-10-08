@@ -2,17 +2,25 @@
 import { HiShoppingBag } from "react-icons/hi";
 import Image from "next/image";
 import BackgroundImage from "@/assets/shopping.jpg";
-import { TextField } from "@mui/material";
+import { CircularProgress, TextField } from "@mui/material";
 import Button from "@/app/components/Button";
 import { ZodIssueCode, z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
+import { useFeedback } from "@/providers/FeedbackProvider";
+import { useMutation } from "@tanstack/react-query";
+import { GetTokenByUserDataProps } from "@/services/auth/types";
+import { authorization } from "@/core";
+import services from "@/services";
+import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { parseFormData } from "@/core/utils";
 
 const loginFormSchema = z
   .object({
-    usuEmail: z.string().nullable(),
-    usuSenha: z.string().nullable(),
+    usuEmail: z.string(),
+    usuSenha: z.string(),
   })
   .superRefine((data, ctx) => {
     if (data.usuEmail === "" || !data.usuEmail) {
@@ -34,6 +42,8 @@ const loginFormSchema = z
 type FormSchemaType = z.infer<typeof loginFormSchema>;
 
 const LoginPage = () => {
+  const router = useRouter();
+  const feedback = useFeedback();
   const {
     register,
     handleSubmit,
@@ -42,7 +52,42 @@ const LoginPage = () => {
     resolver: zodResolver(loginFormSchema),
   });
 
-  const onSubmitHandler = useCallback((formData: FormSchemaType) => {}, []);
+  const { mutate, isLoading } = useMutation({
+    mutationFn: async (props: GetTokenByUserDataProps) =>
+      await services.auth.getTokenByUserData(props),
+    onSuccess: (token) => {
+      authorization.saveAccessToken(token);
+
+      feedback({
+        message: "Seja bem-vindo !",
+        type: "success",
+      });
+    },
+    onError: (error: AxiosError<string>) => {
+      const errorMessage = error?.response?.data?.toString();
+
+      if (errorMessage) {
+        feedback({
+          message: errorMessage,
+          type: "error",
+        });
+      }
+    },
+  });
+
+  const onSubmitHandler = useCallback((formData: FormSchemaType) => {
+    mutate(formData);
+  }, []);
+
+  useEffect(() => {
+    authorization.setOnUpdateAccessToken(() => {
+      const accessToken = authorization.getAccessToken();
+
+      if (accessToken) {
+        router.push("/");
+      }
+    });
+  }, []);
 
   return (
     <div className="flex h-full w-full p-5">
@@ -79,7 +124,9 @@ const LoginPage = () => {
             error={!!errors?.usuSenha?.message}
             helperText={errors?.usuSenha?.message}
           />
-          <Button type="submit">Entrar</Button>
+          <Button type="submit" loading={isLoading}>
+            Entrar
+          </Button>
         </form>
       </div>
     </div>

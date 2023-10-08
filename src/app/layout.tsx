@@ -1,23 +1,29 @@
 import { Roboto } from "next/font/google";
-import "./globals.css"
+import "./globals.css";
+import FeedbackProvider from "@/providers/FeedbackProvider";
+import QueryProvider from "@/providers/QueryProvider";
 
 const roboto = Roboto({
   weight: "400",
-  subsets: ["latin"]
+  subsets: ["latin"],
 });
 
-export default function RootLayout ({
-  children
+export default function RootLayout({
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="pt-br">
       <head>
-        <meta charSet='UTF-8' />
+        <meta charSet="UTF-8" />
         <title>Front-end loja</title>
       </head>
-      <body className={roboto.className}>{children}</body>
+      <body className={roboto.className}>
+        <FeedbackProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </FeedbackProvider>
+      </body>
     </html>
-  )
+  );
 }

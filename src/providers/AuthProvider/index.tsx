@@ -3,12 +3,14 @@
 import { authorization } from "@/core";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useFeedback } from "../FeedbackProvider";
 
 interface AuthProviderProps {
   children: React.ReactNode | React.ReactNode[];
   onDeauthRoute: string;
 }
 const AuthProvider = ({ children, onDeauthRoute }: AuthProviderProps) => {
+  const feedback = useFeedback();
   const router = useRouter();
 
   useEffect(() => {
@@ -17,7 +19,10 @@ const AuthProvider = ({ children, onDeauthRoute }: AuthProviderProps) => {
         router.push(onDeauthRoute);
 
         if (deauthenticated) {
-          alert("desautenticado");
+          feedback({
+            message: "Seu acesso expirou",
+            type: "info",
+          });
         }
       }
     });

@@ -4,11 +4,7 @@ interface AuthLayoutProps {
   children: React.ReactNode | React.ReactNode[];
 }
 const AuthLayout = ({ children }: AuthLayoutProps) => {
-  return (
-    <AuthProvider onDeauthRoute="/login">
-      {children}
-    </AuthProvider>
-  );
-}
+  return <AuthProvider onDeauthRoute="/login">{children}</AuthProvider>;
+};
 
 export default AuthLayout;

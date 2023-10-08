@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.1",
     "@mui/material": "^5.14.12",
+    "@tanstack/react-query": "^4.36.1",
     "axios": "^1.5.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-tailwindcss": "^3.13.0",
@@ -21,7 +22,6 @@
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
     "react-icons": "^4.11.0",
-    "react-query": "^3.39.3",
     "tailwind-merge": "^1.14.0",
     "zod": "^3.22.4",
     "zustand": "^4.4.2"

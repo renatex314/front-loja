@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 
 class CoreAuthTools {
   private axiosInstance: AxiosInstance;
@@ -41,6 +41,11 @@ class CoreAuthTools {
     }
   }
 
+  private clearAccessToken() {
+    localStorage.removeItem("accessToken");
+    this.loadedAccessToken = null;
+  }
+
   private updateAccessToken() {
     let accessToken = null;
 
@@ -68,17 +73,20 @@ class CoreAuthTools {
       return config;
     });
 
-    this.axiosInstance.interceptors.response.use((config) => {
-      if (config.status === 401) {
-        this.loadedAccessToken = null;
+    this.axiosInstance.interceptors.response.use(
+      (config) => config,
+      (error: AxiosError<string>) => {
+        if (error?.response?.status === 401) {
+          this.clearAccessToken();
 
-        if (this.onUpdateAccessToken) {
-          this.onUpdateAccessToken(true);
+          if (this.onUpdateAccessToken) {
+            this.onUpdateAccessToken(true);
+          }
         }
-      }
 
-      return config;
-    });
+        throw error;
+      }
+    );
   }
 }
 
