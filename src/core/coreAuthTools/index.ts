@@ -10,7 +10,7 @@ class CoreAuthTools {
     this.loadedAccessToken = null;
     this.onUpdateAccessToken = null;
 
-    this.updateAccessToken();
+    this.updateLoadedAccessToken();
     this.updateAxiosHeaders();
   }
 
@@ -33,11 +33,19 @@ class CoreAuthTools {
       localStorage.setItem("accessToken", accessToken);
     }
 
-    this.updateAccessToken();
+    this.updateLoadedAccessToken();
     this.updateAxiosHeaders();
 
     if (this.onUpdateAccessToken) {
       this.onUpdateAccessToken(false);
+    }
+  }
+
+  public clearAuthData(deauth = false) {
+    this.clearAccessToken();
+
+    if (this.onUpdateAccessToken) {
+      this.onUpdateAccessToken(deauth);
     }
   }
 
@@ -46,7 +54,7 @@ class CoreAuthTools {
     this.loadedAccessToken = null;
   }
 
-  private updateAccessToken() {
+  private updateLoadedAccessToken() {
     let accessToken = null;
 
     if (typeof localStorage !== "undefined") {
@@ -77,11 +85,7 @@ class CoreAuthTools {
       (config) => config,
       (error: AxiosError<string>) => {
         if (error?.response?.status === 401) {
-          this.clearAccessToken();
-
-          if (this.onUpdateAccessToken) {
-            this.onUpdateAccessToken(true);
-          }
+          this.clearAuthData(true);
         }
 
         throw error;

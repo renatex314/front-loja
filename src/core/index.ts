@@ -9,11 +9,13 @@ const getAccessToken = () => coreAuthTools.getAccessToken();
 const setOnUpdateAccessToken = (
   callback: (deauthenticated?: boolean) => void
 ) => coreAuthTools.setOnUpdateAccessToken(callback);
+const clearAuthData = () => coreAuthTools.clearAuthData();
 
 export const authorization = {
   saveAccessToken,
   getAccessToken,
   setOnUpdateAccessToken,
+  clearAuthData,
 };
 
 export const api = APIAuthBase;

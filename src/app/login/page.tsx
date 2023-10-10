@@ -15,8 +15,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { HiShoppingBag } from "react-icons/hi";
 import { ZodIssueCode, z } from "zod";
+import AppIcon from "../components/AppIcon";
 
 const loginFormSchema = z
   .object({
@@ -101,12 +101,10 @@ const LoginPage = () => {
         alt=""
       />
       <div className="h-fit rounded-md bg-blue-500 text-white drop-shadow-2xl shadow-2xl shadow-blue-500 p-12 text-4xl font-medium">
-        Bem vindo a ShopStore !
+        Bem vindo a RocketStore !
       </div>
       <div className="ml-auto flex h-full w-[400px] grow-0 flex-col items-center rounded-xl bg-white shadow-md">
-        <div className="mt-[20%] h-28 w-28 rounded-full bg-blue-500 p-5">
-          <HiShoppingBag className="h-full w-full text-white" />
-        </div>
+        <AppIcon className="mt-[20%]" />
         <p className="mt-8">Faça o login para poder prosseguir</p>
         <p className="text-xs text-center">
           Não possui uma conta ?{" "}

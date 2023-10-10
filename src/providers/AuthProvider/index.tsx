@@ -26,7 +26,7 @@ const AuthProvider = ({ children, onDeauthRoute }: AuthProviderProps) => {
         }
       }
     });
-  }, [onDeauthRoute, router]);
+  }, [feedback, onDeauthRoute, router]);
 
   return children;
 };

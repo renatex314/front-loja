@@ -7,6 +7,7 @@ import QueryProvider from "../QueryProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { ThemeProvider, createTheme } from "@mui/material";
 import "moment/locale/pt-br";
+import TooltipProvider from "../TooltipProvider";
 
 const theme = createTheme({}, ptBR);
 
@@ -16,11 +17,16 @@ interface AppProviderProps {
 const AppProvider = ({ children }: AppProviderProps) => {
   return (
     <FeedbackProvider>
-      <QueryProvider>
-        <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="pt-br">
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
-        </LocalizationProvider>
-      </QueryProvider>
+      <TooltipProvider>
+        <QueryProvider>
+          <LocalizationProvider
+            dateAdapter={AdapterMoment}
+            adapterLocale="pt-br"
+          >
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </LocalizationProvider>
+        </QueryProvider>
+      </TooltipProvider>
     </FeedbackProvider>
   );
 };
