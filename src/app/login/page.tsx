@@ -1,41 +1,42 @@
 "use client";
-import { HiShoppingBag } from "react-icons/hi";
-import Image from "next/image";
-import BackgroundImage from "@/assets/shopping.jpg";
-import { CircularProgress, TextField } from "@mui/material";
+
 import Button from "@/app/components/Button";
-import { ZodIssueCode, z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect } from "react";
-import { useFeedback } from "@/providers/FeedbackProvider";
-import { useMutation } from "@tanstack/react-query";
-import { GetTokenByUserDataProps } from "@/services/auth/types";
+import BackgroundImage from "@/assets/shopping.jpg";
 import { authorization } from "@/core";
+import { useFeedback } from "@/providers/FeedbackProvider";
 import services from "@/services";
+import { GetTokenByClientDataProps } from "@/services/auth/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TextField } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { parseFormData } from "@/core/utils";
+import { useCallback, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { HiShoppingBag } from "react-icons/hi";
+import { ZodIssueCode, z } from "zod";
 
 const loginFormSchema = z
   .object({
-    usuEmail: z.string(),
-    usuSenha: z.string(),
+    cliEmail: z.string(),
+    cliSenha: z.string(),
   })
   .superRefine((data, ctx) => {
-    if (data.usuEmail === "" || !data.usuEmail) {
+    if (data.cliEmail === "" || !data.cliEmail) {
       ctx.addIssue({
         message: "Você precisa informar o E-mail",
         code: ZodIssueCode.custom,
-        path: ["usuEmail"],
+        path: ["cliEmail"],
       });
     }
 
-    if (data.usuSenha === "" || !data.usuSenha) {
+    if (data.cliSenha === "" || !data.cliSenha) {
       ctx.addIssue({
         message: "Você precisa informar a Senha",
         code: ZodIssueCode.custom,
-        path: ["usuSenha"],
+        path: ["cliSenha"],
       });
     }
   });
@@ -53,7 +54,7 @@ const LoginPage = () => {
   });
 
   const { mutate, isLoading } = useMutation({
-    mutationFn: async (props: GetTokenByUserDataProps) =>
+    mutationFn: async (props: GetTokenByClientDataProps) =>
       await services.auth.getTokenByUserData(props),
     onSuccess: (token) => {
       authorization.saveAccessToken(token);
@@ -75,9 +76,12 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmitHandler = useCallback((formData: FormSchemaType) => {
-    mutate(formData);
-  }, []);
+  const onSubmitHandler = useCallback(
+    (formData: FormSchemaType) => {
+      mutate(formData);
+    },
+    [mutate]
+  );
 
   useEffect(() => {
     authorization.setOnUpdateAccessToken(() => {
@@ -87,7 +91,7 @@ const LoginPage = () => {
         router.push("/");
       }
     });
-  }, []);
+  }, [router]);
 
   return (
     <div className="flex h-full w-full p-5">
@@ -104,25 +108,31 @@ const LoginPage = () => {
           <HiShoppingBag className="h-full w-full text-white" />
         </div>
         <p className="mt-8">Faça o login para poder prosseguir</p>
+        <p className="text-xs text-center">
+          Não possui uma conta ?{" "}
+          <Link className="text-blue-700 underline" href={"/register"}>
+            clique aqui para se registrar
+          </Link>
+        </p>
         <form
           className="my-auto gap-5 flex flex-col w-[80%] mx-auto grow pt-10"
           onSubmit={handleSubmit(onSubmitHandler)}
         >
           <TextField
-            {...register("usuEmail")}
+            {...register("cliEmail")}
             variant="outlined"
             label="E-mail"
             type="email"
-            error={!!errors?.usuEmail?.message}
-            helperText={errors?.usuEmail?.message}
+            error={!!errors?.cliEmail?.message}
+            helperText={errors?.cliEmail?.message}
           />
           <TextField
-            {...register("usuSenha")}
+            {...register("cliSenha")}
             variant="outlined"
             label="Senha"
             type="password"
-            error={!!errors?.usuSenha?.message}
-            helperText={errors?.usuSenha?.message}
+            error={!!errors?.cliSenha?.message}
+            helperText={errors?.cliSenha?.message}
           />
           <Button type="submit" loading={isLoading}>
             Entrar

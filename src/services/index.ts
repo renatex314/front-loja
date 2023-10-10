@@ -1,5 +1,7 @@
 import { apiAuth } from "./auth";
 
-export default {
+const services = {
   auth: apiAuth,
 };
+
+export default services;
