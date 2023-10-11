@@ -14,6 +14,13 @@ const AuthProvider = ({ children, onDeauthRoute }: AuthProviderProps) => {
   const router = useRouter();
 
   useEffect(() => {
+    authorization.setOnNetworkError(() => {
+      feedback({
+        message: "Erro de conexão",
+        type: "error",
+      });
+    });
+
     authorization.setOnUpdateAccessToken((deauthenticated) => {
       if (authorization.getAccessToken() === null) {
         router.push(onDeauthRoute);

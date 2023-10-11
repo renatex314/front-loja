@@ -149,12 +149,19 @@ const RegisterPage = () => {
   );
 
   useEffect(() => {
+    authorization.setOnNetworkError(() => {
+      feedback({
+        message: "Erro de conexão",
+        type: "error",
+      });
+    });
+
     authorization.setOnUpdateAccessToken(() => {
       if (authorization.getAccessToken()) {
         router.push("/");
       }
     });
-  }, [router]);
+  }, [feedback, router]);
 
   return (
     <div className="flex h-full w-full p-5">

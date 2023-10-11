@@ -9,12 +9,15 @@ const getAccessToken = () => coreAuthTools.getAccessToken();
 const setOnUpdateAccessToken = (
   callback: (deauthenticated?: boolean) => void
 ) => coreAuthTools.setOnUpdateAccessToken(callback);
+const setOnNetworkError = (callback: () => void) =>
+  coreAuthTools.setOnNetworkError(callback);
 const clearAuthData = () => coreAuthTools.clearAuthData();
 
 export const authorization = {
   saveAccessToken,
   getAccessToken,
   setOnUpdateAccessToken,
+  setOnNetworkError,
   clearAuthData,
 };
 

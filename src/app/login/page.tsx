@@ -84,6 +84,13 @@ const LoginPage = () => {
   );
 
   useEffect(() => {
+    authorization.setOnNetworkError(() => {
+      feedback({
+        message: "Erro de conexão",
+        type: "error",
+      });
+    });
+
     authorization.setOnUpdateAccessToken(() => {
       const accessToken = authorization.getAccessToken();
 
@@ -91,7 +98,7 @@ const LoginPage = () => {
         router.push("/");
       }
     });
-  }, [router]);
+  }, [feedback, router]);
 
   return (
     <div className="flex h-full w-full p-5">

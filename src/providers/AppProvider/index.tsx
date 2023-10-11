@@ -5,9 +5,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import FeedbackProvider from "../FeedbackProvider";
 import QueryProvider from "../QueryProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { ThemeProvider, createTheme } from "@mui/material";
 import "moment/locale/pt-br";
 import TooltipProvider from "../TooltipProvider";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
+import createTheme from "@mui/material/styles/createTheme";
 
 const theme = createTheme({}, ptBR);
 

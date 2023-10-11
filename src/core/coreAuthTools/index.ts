@@ -4,11 +4,13 @@ class CoreAuthTools {
   private axiosInstance: AxiosInstance;
   private loadedAccessToken: string | null;
   private onUpdateAccessToken: null | ((deauthenticated?: boolean) => void);
+  private onNetworkError: null | (() => void);
 
   constructor() {
     this.axiosInstance = axios.create();
     this.loadedAccessToken = null;
     this.onUpdateAccessToken = null;
+    this.onNetworkError = null;
 
     this.updateLoadedAccessToken();
     this.updateAxiosHeaders();
@@ -27,6 +29,10 @@ class CoreAuthTools {
 
     callback();
   }
+
+  public setOnNetworkError = (callback: () => void) => {
+    this.onNetworkError = callback;
+  };
 
   public saveAccessToken(accessToken: string) {
     if (typeof localStorage !== "undefined") {
@@ -84,6 +90,10 @@ class CoreAuthTools {
     this.axiosInstance.interceptors.response.use(
       (config) => config,
       (error: AxiosError<string>) => {
+        if (error?.code === "ERR_NETWORK" && this.onNetworkError) {
+          this.onNetworkError();
+        }
+
         if (error?.response?.status === 401) {
           this.clearAuthData(true);
         }
