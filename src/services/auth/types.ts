@@ -11,3 +11,12 @@ export interface RegisterClientProps {
   cliRg?: string;
   cliDtNascimento?: string;
 }
+
+export interface GetClientDataResponse {
+  cliNome?: string;
+  cliEmail: string;
+  cliCpf: string;
+  cliRg?: string;
+  cliDtNascimento?: string;
+  cliAdm: number;
+}

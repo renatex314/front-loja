@@ -1,3 +1,4 @@
+import moment from "moment";
 import { isDate } from "util/types";
 import { v4 } from "uuid";
 export const generateUuid = () => v4();
@@ -39,5 +40,16 @@ export const assertFormDataFields = <T extends Object>(
   return fields.every((key) => key in formData && !!formData?.[key]);
 };
 
-export const parseDateToAPI = (date: Date | null) =>
-  !!date ? date?.toISOString()?.split("T")?.[0] : undefined;
+export const parseDateToAPI = (date: Date | null) => {
+  if (!date) return undefined;
+
+  const dateParts = date?.toISOString()?.split("T");
+
+  return [dateParts?.[0], dateParts?.[1]?.slice(0, 8)].join(" ");
+};
+
+export const parseStringToDate = (dateStr: string | null | undefined) => {
+  if (!dateStr) return null;
+
+  return moment(dateStr);
+};

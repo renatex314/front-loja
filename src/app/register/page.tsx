@@ -217,10 +217,7 @@ const RegisterPage = () => {
             render={({ field }) => (
               <DatePicker
                 value={field.value}
-                onChange={(value) => {
-                  console.log(value);
-                  field.onChange(value);
-                }}
+                onChange={field.onChange}
                 label="Data de nascimento"
                 className="col-span-2"
               />

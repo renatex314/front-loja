@@ -7,7 +7,7 @@ interface AuthLayoutProps {
 const AuthLayout = ({ children }: AuthLayoutProps) => {
   return (
     <AuthProvider onDeauthRoute="/login">
-      <div className="h-full w-full">
+      <div className="h-full w-full overflow-hidden bg-gray-50">
         <NavBar />
         {children}
       </div>

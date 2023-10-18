@@ -51,11 +51,15 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      cliEmail: "",
+      cliSenha: "",
+    },
   });
 
   const { mutate, isLoading } = useMutation({
     mutationFn: async (props: GetTokenByClientDataProps) =>
-      await services.auth.getTokenByUserData(props),
+      await services.auth.getTokenByClientData(props),
     onSuccess: (token) => {
       authorization.saveAccessToken(token);
 

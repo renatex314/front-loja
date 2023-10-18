@@ -2,7 +2,7 @@ import { CircularProgress } from "@mui/material";
 import { twMerge } from "tailwind-merge";
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode | React.ReactNode[];
+  children?: React.ReactNode | React.ReactNode[];
   loading?: boolean;
   type?: "button" | "submit";
 }

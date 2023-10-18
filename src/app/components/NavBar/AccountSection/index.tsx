@@ -1,12 +1,19 @@
 import { authorization } from "@/core";
 import { useTooltip } from "@/providers/TooltipProvider";
 import { Divider, Menu, MenuItem } from "@mui/material";
-import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useRef, useState } from "react";
 import { FaUserAstronaut } from "react-icons/fa";
 
 const AccountSection = () => {
+  const router = useRouter();
   const accountIconRef = useRef<HTMLDivElement>(null);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+
+  const openAccountPage = useCallback(() => {
+    router.push("/account");
+    setIsAccountMenuOpen(false);
+  }, [router]);
 
   return (
     <div className="flex h-full ml-auto" ref={accountIconRef}>
@@ -26,7 +33,7 @@ const AccountSection = () => {
         anchorReference="anchorEl"
         onClose={() => setIsAccountMenuOpen(false)}
       >
-        <MenuItem>Meus dados</MenuItem>
+        <MenuItem onClick={openAccountPage}>Meus dados</MenuItem>
         <Divider />
         <MenuItem onClick={() => authorization.clearAuthData()}>Sair</MenuItem>
       </Menu>
