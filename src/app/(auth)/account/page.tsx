@@ -10,7 +10,6 @@ import { Divider, Paper, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { useCallback, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { FaUserAstronaut } from "react-icons/fa";
 import { z } from "zod";
 
 const formSchema = z.object({
