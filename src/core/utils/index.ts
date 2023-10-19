@@ -18,7 +18,7 @@ export const parseFormData = <T extends Object>(
 ): Partial<T> => {
   const parsedFormData = { ...formData };
 
-  Object.keys(parseFormData).forEach((key) => {
+  Object.keys(parsedFormData).forEach((key) => {
     const value = parsedFormData[key as keyof T];
 
     if (

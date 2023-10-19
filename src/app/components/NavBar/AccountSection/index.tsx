@@ -4,6 +4,7 @@ import { Divider, Menu, MenuItem } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
 import { FaUserAstronaut } from "react-icons/fa";
+import UserIcon from "../../UserIcon";
 
 const AccountSection = () => {
   const router = useRouter();
@@ -17,13 +18,10 @@ const AccountSection = () => {
 
   return (
     <div className="flex h-full ml-auto" ref={accountIconRef}>
-      <div
-        className="hover:scale-110 duration-100 cursor-pointer w-12 h-12 bg-blue-500 rounded-full flex justify-center items-center my-auto mr-3"
-        onClick={() => setIsAccountMenuOpen(true)}
+      <UserIcon
+        className="hover:scale-110 duration-100 cursor-pointer"
         {...useTooltip("Minha conta")}
-      >
-        <FaUserAstronaut className="text-white" />
-      </div>
+      />
 
       <Menu
         open={isAccountMenuOpen}
