@@ -15,10 +15,11 @@ const AccountSection = () => {
     router.push("/account");
     setIsAccountMenuOpen(false);
   }, [router]);
-
+  console.log(accountIconRef?.current);
   return (
     <div className="flex h-full ml-auto" ref={accountIconRef}>
       <UserIcon
+        ref={accountIconRef}
         className="hover:scale-110 duration-100 cursor-pointer"
         {...useTooltip("Minha conta")}
       />
